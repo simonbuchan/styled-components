@@ -1,6 +1,6 @@
 // @flow
 import React from 'react'
-import { shallow } from 'enzyme'
+import { shallow, mount } from 'enzyme'
 
 import { resetStyled, expectCSSMatches } from './utils'
 
@@ -138,5 +138,51 @@ describe('attrs', () => {
       children: <span>Amazing</span>
     })``
     expect(shallow(<Comp>Something else</Comp>).html()).toEqual('<div class="sc-a b">Something else</div>')
+  })
+
+  it('should pass through callback ref', () => {
+    const ref = jest.fn()
+    const Comp = styled.div.attrs({
+      ref: () => ref
+    })``
+    const wrapper = mount(<Comp />)
+    const div = wrapper.find('div').first()
+    expect(div).toBeTruthy()
+    expect(ref).toHaveBeenCalledWith(div.instance())
+  })
+
+  it('should pass through object ref', () => {
+    const ref = React.createRef()
+    const Comp = styled.div.attrs({
+      ref: () => ref
+    })``
+    const wrapper = mount(<Comp />)
+    const div = wrapper.find('div').first()
+    expect(div).toBeTruthy()
+    expect(ref).toHaveProperty('current', div.instance())
+  })
+
+  it('should pass through callback ref through inner styled component', () => {
+    const ref = jest.fn()
+    const Inner = styled.div``;
+    const Comp = styled(Inner).attrs({
+      ref: () => ref
+    })``
+    const wrapper = mount(<Comp />)
+    const div = wrapper.find('div').first()
+    expect(div).toBeTruthy()
+    expect(ref).toHaveBeenCalledWith(div.instance())
+  })
+
+  it('should pass through object ref through inner styled component', () => {
+    const ref = React.createRef()
+    const Inner = styled.div``;
+    const Comp = styled(Inner).attrs({
+      ref: () => ref
+    })``
+    const wrapper = mount(<Comp />)
+    const div = wrapper.find('div').first()
+    expect(div).toBeTruthy()
+    expect(ref).toHaveProperty('current', div.instance())
   })
 })
