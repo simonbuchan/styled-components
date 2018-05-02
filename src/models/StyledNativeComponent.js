@@ -125,7 +125,7 @@ export default (constructWithOptions: Function, InlineStyle: Function) => {
 
     onRef = (node: any) => {
       // eslint-disable-next-line react/prop-types
-      const { innerRef } = this.props
+      const innerRef = this.props.innerRef || this.attrs.ref
       this.root = node
 
       if (typeof innerRef === 'function') {

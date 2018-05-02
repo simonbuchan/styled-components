@@ -186,3 +186,11 @@ describe('attrs', () => {
     expect(ref).toHaveProperty('current', div.instance())
   })
 })
+
+test('enzyme should mount object refs', () => {
+  const ref = React.createRef()
+  const wrapper = mount(<div ref={ref} />)
+  const div = wrapper.find('div').first()
+  expect(div).toBeTruthy()
+  expect(ref).toHaveProperty('current', div.instance())
+})

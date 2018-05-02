@@ -213,6 +213,31 @@ describe('native', () => {
       })
     })
 
+    it('passes callback ref on', () => {
+      const ref = jest.fn()
+      const Comp = styled.View.attrs({
+        ref: () => ref,
+      })``
+
+      const wrapper = mount(<Comp />)
+      const view = wrapper.find('View').first()
+
+      expect(ref).toHaveBeenCalledWith(view.instance())
+    })
+
+    it('passes object ref on', () => {
+      const ref = React.createRef()
+
+      const Comp = styled.View.attrs({
+        ref: () => ref,
+      })``
+
+      const wrapper = mount(<Comp />)
+      const view = wrapper.find('View').first()
+
+      expect(ref).toHaveProperty('current', view.instance())
+    })
+
     it('calls an attr-function with context', () => {
       const Comp = styled.View.attrs({
         copy: props => props.test,
